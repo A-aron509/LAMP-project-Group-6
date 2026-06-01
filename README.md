@@ -1,4 +1,4 @@
-# LAMP-project-Group-6 \
+# LAMP-project-Group-6 
 For COP 4331 assignment 1, in Professor Aedo's class \
 \
 For this project we need: \
@@ -13,4 +13,4 @@ Guidelines: \
 Pass Lighthouse tests \
 \
 AFTER all code is done:\
-SHARE and collab on Slides\
+SHARE and collab on Slides 
