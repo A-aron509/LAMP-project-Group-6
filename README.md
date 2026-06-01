@@ -7,10 +7,15 @@ Slideshow (see canvas) \
 User Sign up \
 User Search\
 Password hashing (I think we already have) \
-One Unified website URL. (Might need to add each other on DigitalOcean team) \
-\
+One Unified website URL. (Might need to add each other on DigitalOcean team) 
+
+ 
+AFTER all code is done: \
+SHARE and collab on Slides 
+
 Guidelines: \
 Pass Lighthouse tests \
-\
-AFTER all code is done:\
-SHARE and collab on Slides 
+ERD diagram \
+Gantt chart \
+Use Case Diagram \
+Activity or Sequence Diagram 
