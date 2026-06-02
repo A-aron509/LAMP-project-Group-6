@@ -1,4 +1,6 @@
 <?php
+ini_set('session.cookie_samesite', 'Lax');
+session_set_cookie_params(['samesite' => 'Lax', 'path' => '/']);
 // ============================================================
 //  config/helpers.php — Shared utilities
 // ============================================================

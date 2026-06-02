@@ -1,13 +1,13 @@
 <?php
 // ============================================================
 //  config/db.php  — Database connection (PDO)
-//  Update these values on your server
+//  Update the constants below to match your Digital Ocean DB.
 // ============================================================
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'contact_manager');
-define('DB_USER', 'root');
-define('DB_PASS', 'your_password_here');
+define('DB_USER', 'root');          // change to your MySQL user
+define('DB_PASS', ''); // change to your MySQL password
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO {

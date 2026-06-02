@@ -588,7 +588,7 @@
 <script>
 // ── Config ─────────────────────────────────────────────────
 // Update this to your actual domain when deployed
-const API = '/api';
+const API = '/lamp_api/api';
 
 // ── State ──────────────────────────────────────────────────
 let allContacts  = [];
@@ -609,8 +609,13 @@ function showToast(msg, type = 'success') {
 }
 
 function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(`${name}-view`).classList.add('active');
+  document.querySelectorAll('.view, #dashboard-view').forEach(v => {
+    v.classList.remove('active');
+    v.style.display = 'none';
+  });
+  const el = document.getElementById(`${name}-view`);
+  el.classList.add('active');
+  el.style.display = name === 'dashboard' ? 'flex' : 'block';
 }
 
 async function apiCall(endpoint, method = 'GET', body = null) {
@@ -653,6 +658,7 @@ async function handleLogin(e) {
 
   btn.disabled = false; btn.textContent = 'Log In';
 
+  console.log('Login response:', ok, data);
   if (ok) {
     currentUser = { id: data.user_id, username: data.username };
     enterDashboard();
@@ -695,6 +701,7 @@ async function handleLogout() {
 // ══════════════════════════════════════════════════════════
 
 function enterDashboard() {
+  console.log('entering dashboard, user:', currentUser);
   document.getElementById('nav-username').textContent = currentUser.username;
   showView('dashboard');
   loadContacts();
