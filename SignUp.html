@@ -1,0 +1,35 @@
+<html>
+<head>
+
+	<title>COP 4331 LAMP Stack Demo</title>
+	<script type="text/javascript" src="js/code.js"></script>
+    <link href="css/styles.css" rel="stylesheet">	
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() 
+	{
+		readCookie();
+	}, false);
+	</script>
+	
+</head>
+
+
+<body>
+
+<h1 id="title">COP 4331 LAMP Stack Demo</h1>
+
+<div id="signup">
+	
+ 	<input type="text" id="FirstName" placeholder="FirstName?"/>
+  	<input type="text" id="LastName" placeholder="LastName?"/>
+   	<input type="text" id="User" placeholder="UserName"/>
+	<input type="password" id="Password" placeholder="Password"/>
+    	<button type="button" id="SubSignUp" class="buttons" onclick="addUser();"> Sign me up! </button><br />
+	<span id="NewAccount"></span>
+
+</div>
+
+</body>
+</html>
