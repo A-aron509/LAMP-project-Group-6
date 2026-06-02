@@ -14,7 +14,7 @@ function doLogin()
 	var hash = md5( Password );
 		document.getElementById("loginResult").innerHTML = "";
 
-	let tmp = {Login:login,Password:password}; //should be uppercase per database
+	//let tmp = {Login:login,Password:password}; //should be uppercase per database
   var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify(tmp);
 	
@@ -197,7 +197,7 @@ function searchColor() {
 
 		xhr.send(jsonPayload);
 	
-  } catch(err) {=
+  } catch(err) {
 		document.getElementById("colorSearchResult").innerHTML = err.message;
 	}
 	
@@ -219,48 +219,31 @@ let srch = document.getElementById("searchText").value;
 
 }
 
-function addContact() { 
-	let newColor = document.getElementById("contactText").value;
-	document.getElementById("contactAddResult").innerHTML = "";
 
-	let tmp = {Color:newColor,UserId:userId};
-	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/addContact.' + extension;
-	
+function deleteUser() { 
+
+
+}
+
+function editUser() { 
+
+
+}
+
+function doSignup() { //takes user to sign up page
+let url = urlBase + '/Signup.' + extension;
+
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				document.getElementById("colorAddResult").innerHTML = "Contact has been added";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
-	}
+
+  
 
 }
 
-function deleteContact() { 
-
-
-}
-
-function editContact() { 
-
-
-}
-
-function addUser() { 
-	let newColor = document.getElementById("colorText").value;
+function addUser() { //puts user info into database, then takes user to login page
+	let newUser = document.getElementById("colorText").value;
 	document.getElementById("colorAddResult").innerHTML = "";
 
 	let tmp = {Color:newColor,UserId:userId};
@@ -271,17 +254,23 @@ function addUser() {
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+
+
 	try
 	{
 		xhr.onreadystatechange = function() 
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorAddResult").innerHTML = "User has been added";
+				document.getElementById("FirstName").innerHTML;
+				document.getElementById("LastName").innerHTML;
+				document.getElementById("User").innerHTML;
+				document.getElementById("Password").innerHTML ;
 			}
 		};
 		xhr.send(jsonPayload);
 	}
+
 	catch(err)
 	{
 		document.getElementById("colorAddResult").innerHTML = err.message;
