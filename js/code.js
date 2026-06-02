@@ -11,11 +11,11 @@ function doLogin()
 	
 	let login = document.getElementById("loginName").value;
 	let password = document.getElementById("loginPassword").value;
-//	var hash = md5( Password );
+	var hash = md5( Password );
 		document.getElementById("loginResult").innerHTML = "";
 
 	let tmp = {Login:login,Password:password}; //should be uppercase per database
-	//var tmp = {login:login,password:hash};
+  var tmp = {login:login,password:hash};
 	let jsonPayload = JSON.stringify(tmp);
 	
  //alert (jsonPayload);
@@ -120,8 +120,7 @@ function doLogout()
 
 
 
-function addColor()
-{ //needs to be fixed bc it adds duplicate colors already added to the user's list, need to add a check to make sure the color is not already in the user's list before adding it
+function addColor() { 
 	let newColor = document.getElementById("colorText").value;
 	document.getElementById("colorAddResult").innerHTML = "";
 
@@ -198,136 +197,36 @@ function searchColor() {
 
 		xhr.send(jsonPayload);
 	
-  } catch(err) {
+  } catch(err) {=
 		document.getElementById("colorSearchResult").innerHTML = err.message;
 	}
 	
 } 
 
-/*const urlBase = 'https://lampsxyz.online/LAMPAPI';
-const extension = 'php';
-
-let ID = 0;
-let FirstName = "";
-let LastName = "";
-
-function doLogin()
-{
-	ID = 0;
-	FirstName = "";
-	LastName = "";
+function searchContact() { 
+let srch = document.getElementById("searchText").value;
+	document.getElementById("contactSearchResult").innerHTML = "";
 	
-	let Login = document.getElementById("Login").value;
-	let Password = document.getElementById("Password").value;
-//	var hash = md5( password );
-	
- 
-	document.getElementById("loginResult").innerHTML = "";
+	let contactList = "";
 
-	let tmp = {Login:Login,Password:Password};
-	//var tmp = {login:login,password:hash};
-	let jsonPayload = JSON.stringify( tmp );
-	
-	let url = urlBase + '/Login.' + extension;
-
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
- 
-	try
-	{
-		xhr.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200){	
-      let jsonObject= JSON.Parse(xhr.responseText);
-      ID= jsonObject.ID;
-      
-      if (ID<1){
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					return;
-                 }
-                 
-                 	FirstName = jsonObject.FirstName;
-	                LastName = jsonObject.LastName;
-				}
-			};
-			xhr.send(jsonPayload);
-		
-	}
-	catch(err)
-	{
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
-
-}
-
-function saveCookie()
-{
-	let minutes = 20;
-	let date = new Date();
-	date.setTime(date.getTime()+(minutes*60*1000));	
- document.cookie = "userId=" + ID + "firstName=" + FirstName + ",lastName=" + LastName + ";expires=" + date.toGMTString();
-}
-
-function readCookie()
-{
-	userId = -1;
-	let data = document.cookie;
-	let splits = data.split(",");
-	for(var i = 0; i < splits.length; i++) 
-	{
-		let thisOne = splits[i].trim();
-		let tokens = thisOne.split("=");
-   
-      if( tokens[0] == "FirstName" )
-		{
-			firstName = tokens[1];
-		}
-		else if( tokens[0] == "LastName" )
-		{
-			lastName = tokens[1];
-		}
-		else if( tokens[0] == "ID" )
-		{
-			userId = parseInt( tokens[1].trim() );
-		}
-   
-	
-	}
-	
-	if( userId < 0 )
-	{
-		window.location.href = "index.html";
-	}
-	else
-	{
-		document.getElementById("Login").innerHTML = "Logged in as " + FirstName + " " + LastName;
-	}
-}
-
-
-
-function doLogout()
-{
-	userId = 0;
-	FirstName = "";
-	LsastName = "";
-	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
-}
-
-
-
-
-/*
-function addColor()
-{
-	let newColor = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
-
-	let tmp = {color:newColor,userId,userId};
+	let tmp = {search:srch,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/AddColor.' + extension;
+	let url = urlBase + '/SearchContact.' + extension;
+ 
+ 
+	
+
+}
+
+function addContact() { 
+	let newColor = document.getElementById("contactText").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {Color:newColor,UserId:userId};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/addContact.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -338,7 +237,7 @@ function addColor()
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorAddResult").innerHTML = "Color has been added";
+				document.getElementById("colorAddResult").innerHTML = "Contact has been added";
 			}
 		};
 		xhr.send(jsonPayload);
@@ -347,21 +246,27 @@ function addColor()
 	{
 		document.getElementById("colorAddResult").innerHTML = err.message;
 	}
-	
-} */
 
-/*
-function searchColor()
+}
 
-	let srch = document.getElementById("searchText").value;
-	document.getElementById("colorSearchResult").innerHTML = "";
-	
-	let colorList = "";
+function deleteContact() { 
 
-	let tmp = {search:srch,userId:userId};
+
+}
+
+function editContact() { 
+
+
+}
+
+function addUser() { 
+	let newColor = document.getElementById("colorText").value;
+	document.getElementById("colorAddResult").innerHTML = "";
+
+	let tmp = {Color:newColor,UserId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/SearchColors.' + extension;
+	let url = urlBase + '/AddUser.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -372,26 +277,14 @@ function searchColor()
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("colorSearchResult").innerHTML = "Color(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-				
-				for( let i=0; i<jsonObject.results.length; i++ )
-				{
-					colorList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						colorList += "<br />\r\n";
-					}
-				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = colorList;
+				document.getElementById("colorAddResult").innerHTML = "User has been added";
 			}
 		};
 		xhr.send(jsonPayload);
 	}
 	catch(err)
 	{
-		document.getElementById("colorSearchResult").innerHTML = err.message;
+		document.getElementById("colorAddResult").innerHTML = err.message;
 	}
-	
-} */
+
+}
