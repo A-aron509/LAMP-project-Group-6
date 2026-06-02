@@ -13,7 +13,7 @@ body
     color: #FFFAFA;
 }
 
-#loginDiv
+#LoginDiv
 {
     font-size: 30px;
     width: 70%;
@@ -21,6 +21,35 @@ body
     padding: 25px;
     background-color:#20B2AA;
 }
+
+#SignupDiv
+{
+    font-size: 30px;
+    width: 70%;
+    margin-left: 15%;
+    padding: 25px;
+    background-color:#20B2AA;
+}
+
+
+
+#signupButton {
+  width: 20%;
+    margin-left: 40%;
+
+}
+
+
+
+#SignUp
+{
+    font-size: 40px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+    margin: 0 0 2% 0;
+}
+
 
 #loggedInDiv
 {
