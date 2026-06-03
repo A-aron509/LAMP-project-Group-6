@@ -249,20 +249,20 @@ function addUser() { //puts user info into database, then takes user to login pa
 	let FirstName = document.getElementById("FirstName").value;
 	let LastName = document.getElementById("LastName").value;
 	let User = document.getElementById("User").value;
-	let password = document.getElementById("Password").value;
+	let Password = document.getElementById("Password").value;
 	document.getElementById("NewAccount").innerHTML = "";
 
 	//if fields are empty, then we show error message and do not add user to database
-	if (FirstName == "" || LastName == "" || User == "" || password == "") {
+	if (FirstName == "" || LastName == "" || User == "" || Password == "") {
 		document.getElementById("NewAccount").innerHTML = "Please fill in all fields.";
 		return;
 	}
 
-	let hash = md5(Password);
+	var hash = md5(Password);
 	let tmp = {FirstName:FirstName, LastName:LastName, Login:User, Password:hash};
 	let jsonPayload = JSON.stringify(tmp);
 
-	let url = urlBase + '/AddUser.' + extension;
+	let url = urlBase + '/Signup.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
