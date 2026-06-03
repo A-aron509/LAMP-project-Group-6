@@ -11,11 +11,12 @@ function doLogin()
 	
 	let login = document.getElementById("loginName").value;
 	let password = document.getElementById("loginPassword").value;
-	var hash = md5( Password );
+	var hash = md5(password);
 		document.getElementById("loginResult").innerHTML = "";
 
-	//let tmp = {Login:login,Password:password}; //should be uppercase per database
-  var tmp = {login:login,password:hash};
+
+	let tmp = {Login:login,Password:hash};
+
 	let jsonPayload = JSON.stringify(tmp);
 	
  //alert (jsonPayload);
@@ -236,6 +237,8 @@ let url = urlBase + '/Signup.' + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
+
+	window.location.href="SignUp.html"; 
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
   
@@ -243,11 +246,21 @@ let url = urlBase + '/Signup.' + extension;
 }
 
 function addUser() { //puts user info into database, then takes user to login page
-	let newUser = document.getElementById("colorText").value;
-	document.getElementById("colorAddResult").innerHTML = "";
+	let FirstName = document.getElementById("FirstName").value;
+	let LastName = document.getElementById("LastName").value;
+	let User = document.getElementById("User").value;
+	let password = document.getElementById("Password").value;
+	document.getElementById("NewAccount").innerHTML = "";
 
-	let tmp = {Color:newColor,UserId:userId};
-	let jsonPayload = JSON.stringify( tmp );
+	//if fields are empty, then we show error message and do not add user to database
+	if (FirstName == "" || LastName == "" || User == "" || password == "") {
+		document.getElementById("NewAccount").innerHTML = "Please fill in all fields.";
+		return;
+	}
+
+	let hash = md5(Password);
+	let tmp = {FirstName:FirstName, LastName:LastName, Login:User, Password:hash};
+	let jsonPayload = JSON.stringify(tmp);
 
 	let url = urlBase + '/AddUser.' + extension;
 	
@@ -255,25 +268,20 @@ function addUser() { //puts user info into database, then takes user to login pa
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
-
 	try
 	{
 		xhr.onreadystatechange = function() 
 		{
 			if (this.readyState == 4 && this.status == 200) 
 			{
-				document.getElementById("FirstName").innerHTML;
-				document.getElementById("LastName").innerHTML;
-				document.getElementById("User").innerHTML;
-				document.getElementById("Password").innerHTML ;
+				document.getElementById("NewAccount").innerHTML = "User has been added";
+				window.location.href="index.html"; //takes user to login page after successful sign up
 			}
 		};
 		xhr.send(jsonPayload);
-	}
-
-	catch(err)
+	} catch(err)
 	{
-		document.getElementById("colorAddResult").innerHTML = err.message;
+		document.getElementById("NewAccount").innerHTML = err.message;
 	}
 
 }
