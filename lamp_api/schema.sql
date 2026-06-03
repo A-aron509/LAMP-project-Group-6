@@ -1,6 +1,6 @@
 -- ============================================================
 --  Contact Manager — MySQL Schema
---  Run this on your Digital Ocean droplet:
+--  Run this on Digital Ocean droplet:
 --  mysql -u root -p < schema.sql
 -- ============================================================
 
