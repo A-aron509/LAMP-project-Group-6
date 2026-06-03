@@ -10,42 +10,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $inData = getRequestInfo();
 
-$firstName = $inData["firstName"];
-$lastName = $inData["lastName"];
-$login = $inData["login"];
-$password = $inData["password"];
+$firstName = $inData["firstName"]; // user's first name
+$lastName = $inData["lastName"];   // user's last name
+$login = $inData["login"];         // username/login
+$password = $inData["password"];   // plain password from user
 
-// hash + salt password
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT); // hash + salt password
 
 $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 
-if ($conn->connect_error) {
+if ($conn->connect_error) 
+{
     returnWithError($conn->connect_error);
-} else {
-
-    // insert new user into Users table
+} 
+else
+{
     $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
     $stmt->bind_param("ssss", $firstName, $lastName, $login, $hashedPassword);
     $stmt->execute();
-
     $stmt->close();
     $conn->close();
 
     returnWithError("");
 }
 
-function getRequestInfo() {
+function getRequestInfo()
+{
     return json_decode(file_get_contents('php://input'), true);
 }
 
-function sendResultInfoAsJson($obj) {
+function sendResultInfoAsJson($obj)
+{
     header('Content-type: application/json');
     echo $obj;
 }
 
-function returnWithError($err) {
+function returnWithError($err)
+{
     $retValue = '{"error":"' . $err . '"}';
     sendResultInfoAsJson($retValue);
 }
+
 ?>
