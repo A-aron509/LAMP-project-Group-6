@@ -8,47 +8,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
+require_once 'db.php';
+
 $inData = getRequestInfo();
 
-$firstName = $inData["firstName"]; // user's first name
-$lastName = $inData["lastName"];   // user's last name
-$login = $inData["login"];         // username/login
-$password = $inData["password"];   // plain password from user
+$username = trim($inData["username"] ?? '');
+$password = $inData["password"] ?? '';
 
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT); // hash + salt password
+// Validation
+if (empty($username) || empty($password)) {
+    returnWithError("Username and password are required");
+}
 
-$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
+if (strlen($username) < 3) {
+    returnWithError("Username must be at least 3 characters");
+}
 
-if ($conn->connect_error) 
-{
-    returnWithError($conn->connect_error);
-} 
-else
-{
-    $stmt = $conn->prepare("INSERT INTO Users (FirstName, LastName, Login, Password) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("ssss", $firstName, $lastName, $login, $hashedPassword);
-    $stmt->execute();
+if (strlen($password) < 6) {
+    returnWithError("Password must be at least 6 characters");
+}
+
+// Check if username already exists
+$stmt = $conn->prepare("SELECT id FROM Users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $stmt->close();
+    returnWithError("Username already taken");
+}
+$stmt->close();
+
+// Hash password (this handles salting automatically)
+$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+// Insert new user
+$stmt = $conn->prepare("INSERT INTO Users (username, password_hash) VALUES (?, ?)");
+$stmt->bind_param("ss", $username, $passwordHash);
+
+if ($stmt->execute()) {
+    $userId = $conn->insert_id;
     $stmt->close();
     $conn->close();
-
-    returnWithError("");
+    returnWithInfo([
+        'success' => true,
+        'message' => 'Registration successful',
+        'userId' => $userId
+    ]);
+} else {
+    $stmt->close();
+    $conn->close();
+    returnWithError("Registration failed");
 }
-
-function getRequestInfo()
-{
-    return json_decode(file_get_contents('php://input'), true);
-}
-
-function sendResultInfoAsJson($obj)
-{
-    header('Content-type: application/json');
-    echo $obj;
-}
-
-function returnWithError($err)
-{
-    $retValue = '{"error":"' . $err . '"}';
-    sendResultInfoAsJson($retValue);
-}
-
 ?>
+
