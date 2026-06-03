@@ -241,10 +241,23 @@ function editContact() {  ///contact to edit in book
 
 
 function addContact() { ///contact to book
-let newContact = document.getElementById("contactAdd").value;
+
+	let FirstName = document.getElementById("contactAddFirst").value;
+	let LastName = document.getElementById("contactAddLast").value;
+	let Phone = document.getElementById("contactAddPhone").value;
+ 	let Email = document.getElementById("contactAddEmail").value;
 	document.getElementById("contactAddResult").innerHTML = "";
 
-	let tmp = {Contact:newContact,UserId:userId};
+
+if (FirstName == "" || LastName == "" || Email == "") {
+		document.getElementById("contactAddResult").innerHTML = "Please fill in all fields.";
+		return;
+	}
+
+
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {FirstName:FirstName, LastName:LastName, Phone: Phone, Email:Email, userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/contacts/AddContact.' + extension;
@@ -252,6 +265,7 @@ let newContact = document.getElementById("contactAdd").value;
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+ 
 	try
 	{
 		xhr.onreadystatechange = function() 
@@ -259,6 +273,7 @@ let newContact = document.getElementById("contactAdd").value;
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+        window.location.href="color.html"; //takes user to login page after successful sign up
 			}
 		};
 		xhr.send(jsonPayload);
