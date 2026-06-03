@@ -11,10 +11,13 @@
 		returnWithError( $conn->connect_error );
 	} 
 	else
-	{
-		$colorName = "%" . $inData["search"] . "%";
-		$stmt = $conn->prepare("SELECT FirstName, LastName, Email, Phone FROM Contacts WHERE ID LIKE ? AND UserID = ?");
-		$stmt->bind_param("sssi", $FirstName, $LastName, $Email, $Phone ["userId"]);
+	{		$search = "%" . $inData["search"] . "%";
+		$stmt = $conn->prepare("SELECT FirstName, LastName,  Phone, Email FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?) AND UserID = ?");
+		if (!$stmt) {
+			returnWithError($conn->error);
+			exit();
+		}
+		$stmt->bind_param("sssi", $search, $search, $search, $inData["userId"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		
@@ -26,6 +29,7 @@
 			}
 			$searchCount++;
 			   $searchResults .= '"' . $row["Name"] . '"';
+			  
 		}
 		
 		if( $searchCount == 0 )

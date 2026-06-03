@@ -221,8 +221,9 @@ function searchColor() {
 } 
 //--------------------------------------------------------------------
 function searchContact() { 
-let srch = document.getElementById("ContactSearchButton").value;
+	let srch = document.getElementById("ContactSearch").value;
 	document.getElementById("contactSearchResult").innerHTML = "";
+	document.getElementById("contactActions").style.display = "none";
 	
 	let contactList = "";
 
@@ -238,51 +239,61 @@ let srch = document.getElementById("ContactSearchButton").value;
 	try
 	{
 		xhr.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
-				let jsonObject = JSON.parse( xhr.responseText );
-					
-
-
-				for( let i=0; i<jsonObject.results.length; i++ ) //gives array
-				{
-					ContactList += jsonObject.results[i];
-					if( i < jsonObject.results.length - 1 )
-					{
-						ContactList += "<br />\r\n";
+			if (this.readyState == 4) {
+				if (this.status == 200) {
+					let jsonObject = JSON.parse(xhr.responseText);
+					if (jsonObject.error && jsonObject.error !== "") {
+						document.getElementById("contactSearchResult").innerHTML = jsonObject.error;
+						document.getElementById("ContactList").innerHTML = "";
+						document.getElementById("contactActions").style.display = "none";
+					} else {
+						document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
+						for (let i = 0; i < jsonObject.results.length; i++) {
+							contactList += jsonObject.results[i];
+							if (i < jsonObject.results.length - 1) {
+								contactList += "<br />\r\n";
+							}
+						}
+						document.getElementById("ContactList").innerHTML = contactList;
+						document.getElementById("contactActions").style.display = "block";
 					}
-					 {
-				
-
-
-
-					}
+				} else {
+					document.getElementById("contactSearchResult").innerHTML = "Server error: " + this.status;
+					document.getElementById("contactActions").style.display = "none";
 				}
-				
-				document.getElementsByTagName("p")[0].innerHTML = "ContactList";
 			}
-			
 		};
 
-			
-
 		xhr.send(jsonPayload);
-	
-  } catch(err) {
-		document.getElementById("contactSearchResult").innerHTML = err.message;
 	}
-	
-
+	catch(err) {
+		document.getElementById("contactSearchResult").innerHTML = err.message;
+		document.getElementById("contactActions").style.display = "none";
+	}
 }
-
 
 
 function deleteContact() { // ///contact to del in book
+let del = document.getElementById("ContactSearch").value;
+	document.getElementById("contactSearchResult").innerHTML = "";
+	document.getElementById("contactActions").style.display = "none";
+
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/contacts/DeleteContact.' + extension;
 
 
 }
 
-function editContact() {  ///contact to edit in book
+function editContact() {  ///contact to edit in book //maybe show contact ID number and then edit??
+let del = document.getElementById("ContactSearch").value;
+	document.getElementById("contactSearchResult").innerHTML = "";
+	document.getElementById("contactActions").style.display = "none";
+
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/contacts/EditContact.' + extension;
+
 
 
 }
