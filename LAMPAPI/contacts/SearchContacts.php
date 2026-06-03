@@ -1,45 +1,67 @@
 <?php
-require_once '../config/db.php';
-require_once '../config/helpers.php';
 
-setCORSHeaders();
+	$inData = getRequestInfo();
+	
+	$searchResults = "";
+	$searchCount = 0;
 
-$userId = requireAuth();
-$db     = getDB();
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
+	if ($conn->connect_error) 
+	{
+		returnWithError( $conn->connect_error );
+	} 
+	else
+	{
+		$colorName = "%" . $inData["search"] . "%";
+		$stmt = $conn->prepare("SELECT FirstName, LastName, Email, Phone FROM Contacts WHERE ID LIKE ? AND UserID = ?");
+		$stmt->bind_param("sssi", $FirstName, $LastName, $Email, $Phone ["userId"]);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		
+		while($row = $result->fetch_assoc())
+		{
+			if( $searchCount > 0 )
+			{
+				$searchResults .= ",";
+			}
+			$searchCount++;
+			   $searchResults .= '"' . $row["Name"] . '"';
+		}
+		
+		if( $searchCount == 0 )
+		{
+			returnWithError( "No Records Found" );
+		}
+		else
+		{
+			returnWithInfo( $searchResults);
+		}
+		
+		$stmt->close();
+		$conn->close();
+	}
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    respond(405, ['error' => 'Method not allowed']);
-}
+	function getRequestInfo()
+	{
+		return json_decode(file_get_contents('php://input'), true);
+	}
 
-$search = isset($_GET['q']) ? trim($_GET['q']) : '';
-
-if ($search === '') {
-    respond(400, ['error' => 'Search term required — use ?q=searchterm']);
-}
-
-$like = '%' . $search . '%';
-
-$stmt = $db->prepare(
-    'SELECT contact_id, first_name, last_name, email, phone, notes, created_at
-     FROM contacts
-     WHERE user_id = :uid
-       AND (
-         first_name LIKE :q1
-         OR last_name  LIKE :q2
-         OR email      LIKE :q3
-         OR phone      LIKE :q4
-         OR CONCAT(first_name, \' \', last_name) LIKE :q5
-       )
-     ORDER BY first_name, last_name'
-);
-
-$stmt->execute([
-    ':uid' => $userId,
-    ':q1'  => $like,
-    ':q2'  => $like,
-    ':q3'  => $like,
-    ':q4'  => $like,
-    ':q5'  => $like,
-]);
-
-respond(200, $stmt->fetchAll());
+	function sendResultInfoAsJson( $obj )
+	{
+		header('Content-type: application/json');
+		echo $obj;
+	}
+	
+	function returnWithError( $err )
+	{
+		$retValue = '{"id":0,"firstName":"","lastName":"","error":"' . $err . '"}';
+		sendResultInfoAsJson( $retValue );
+	}
+	
+	function returnWithInfo( $searchResults )
+	{
+		$retValue = '{"results":[' . $searchResults . '],"error":""}';
+		sendResultInfoAsJson( $retValue );
+	}
+	
+?>

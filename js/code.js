@@ -5,13 +5,23 @@ let xhr = new XMLHttpRequest();
 let userId = 0;
 let FirstName = "";
 let LastName = "";
-
+//--------------------------------------------------------------------
+function colorsMenu(){
+	window.location.href = "color.html";
+}
+function contactsMenu(){
+	window.location.href = "contacts.html";
+}
 
 function goHome()
 {
 	window.location.href = "index.html";
 	}
-
+ function goBack()
+{
+	window.location.href = "menu.html";
+	}
+//--------------------------------------------------------------------
 function doLogin()
 {
 	
@@ -52,7 +62,7 @@ function doLogin()
                 	FirstName = jsonObject.FirstName; //toggle case due to database fields
 	                LastName = jsonObject.LastName;
                     saveCookie(); // 	firstname +   lastname
-                    window.location.href="color.html"; //when user does sucessful login, take to another window
+                    window.location.href="menu.html"; //when user does sucessful login, take to another window
       }
     };
 	xhr.send(jsonPayload);
@@ -109,7 +119,7 @@ function readCookie()
 	{
 				   let userNameElem = document.getElementById("userName");
 		   if (userNameElem) {
-			   userNameElem.innerHTML = "Logged in as " + FirstName + " " + LastName;
+			   userNameElem.innerHTML = "Welcome " + FirstName + " " + LastName;
 		   }
 		
 	}
@@ -211,7 +221,7 @@ function searchColor() {
 } 
 //--------------------------------------------------------------------
 function searchContact() { 
-let srch = document.getElementById("searchText").value;
+let srch = document.getElementById("ContactSearchButton").value;
 	document.getElementById("contactSearchResult").innerHTML = "";
 	
 	let contactList = "";
@@ -219,9 +229,48 @@ let srch = document.getElementById("searchText").value;
 	let tmp = {search:srch,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/SearchContact.' + extension;
+	let url = urlBase + '/contacts/SearchContacts.' + extension;
  
  
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
+				let jsonObject = JSON.parse( xhr.responseText );
+					
+
+
+				for( let i=0; i<jsonObject.results.length; i++ ) //gives array
+				{
+					ContactList += jsonObject.results[i];
+					if( i < jsonObject.results.length - 1 )
+					{
+						ContactList += "<br />\r\n";
+					}
+					 {
+				
+
+
+
+					}
+				}
+				
+				document.getElementsByTagName("p")[0].innerHTML = "ContactList";
+			}
+			
+		};
+
+			
+
+		xhr.send(jsonPayload);
+	
+  } catch(err) {
+		document.getElementById("contactSearchResult").innerHTML = err.message;
+	}
 	
 
 }
@@ -273,7 +322,7 @@ if (FirstName == "" || LastName == "" || Email == "") {
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
-        window.location.href="color.html"; //takes user to login page after successful sign up
+        window.location.href="menu.html"; //takes user to login page after successful sign up
 			}
 		};
 		xhr.send(jsonPayload);

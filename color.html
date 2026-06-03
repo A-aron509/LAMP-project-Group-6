@@ -17,10 +17,6 @@
 
 <h1 id="title">COP 4331 LAMP Stack Demo</h1>
 
-<div id="loggedInDiv">
-	<span id="userName"></span><br />
-	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
-</div>
 
 <div id="accessUIDiv">
 	<br />
@@ -36,37 +32,11 @@
 	<span id="colorAddResult"></span>
 </div>
 
-
-<div id="ContactBook"> <br />
-
-<input type="text" id="ContactSearch" placeholder="ContactToSearch"/>
-	<button type="button" id="ContactSearchButton" class="buttons" onclick="searchContact();"> Search Contact </button><br />
-	<span id="contactSearchResult"></span>
-	<p id="colorList">
-	</p><br /><br />
-
-	<input type="text" id="contactAddFirst" placeholder="Contact FirstName"/>
-	<input type="text" id="contactAddLast" placeholder="Contact LastName"/>
-	<input type="text" id="contactAddPhone" placeholder="Contact Phone"/>
- <input type="text" id="contactAddEmail" placeholder="Contact Email"/>
-	<button type="button" id="contactAddButton" class="buttons" onclick="addContact();"> Add Contact </button><br />
-	<span id="contactAddResult"></span>
- 
-	</p><br /><br />
-<input type="text" id="contactAddFirst" placeholder="Contact FirstName"/>
-	<button type="button" id="contactAddButton" class="buttons" onclick="deleteContact();"> Add Contact </button><br />
-	<span id="contactDelResult"></span>
-	</p><br /><br />
-<!-- do search then edit/del contact make buttons apear after search -->
-<input type="text" id="SearchContact" placeholder="Contact FirstName/LastName/Email"/>
-	<button type="button" id="contactAddButton" class="buttons" onclick="editContact();"> Add Contact </button><br />
-	<span id="contactSearchResult"></span>
-
-	</p><br /><br />
-
-
-
+<div id="back">
+	<span id="backB"></span><br />
+	<button type="button" id="backbutton" class="buttons" onclick="goBack();"> Back </button>
 </div>
+
 
 </body>
 </html>
