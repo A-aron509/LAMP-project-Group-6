@@ -6,6 +6,12 @@ let userId = 0;
 let FirstName = "";
 let LastName = "";
 
+
+function goHome()
+{
+	window.location.href = "index.html";
+	}
+
 function doLogin()
 {
 	
