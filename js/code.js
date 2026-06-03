@@ -209,7 +209,7 @@ function searchColor() {
 	}
 	
 } 
-
+//--------------------------------------------------------------------
 function searchContact() { 
 let srch = document.getElementById("searchText").value;
 	document.getElementById("contactSearchResult").innerHTML = "";
@@ -228,15 +228,50 @@ let srch = document.getElementById("searchText").value;
 
 
 
-function deleteUser() { 
+function deleteContact() { // ///contact to del in book
 
 
 }
 
-function editUser() { 
+function editContact() {  ///contact to edit in book
 
 
 }
+
+
+
+function addContact() { ///contact to book
+let newContact = document.getElementById("contactAdd").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	let tmp = {Contact:newContact,UserId:userId};
+	let jsonPayload = JSON.stringify( tmp );
+
+	let url = urlBase + '/contacts/AddContact.' + extension;
+	
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try
+	{
+		xhr.onreadystatechange = function() 
+		{
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
+			}
+		};
+		xhr.send(jsonPayload);
+	}
+	catch(err)
+	{
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
+
+}
+
+
+//--------------------------------------------------------------------
 
 function doSignup() { //takes user to sign up page
 let url = urlBase + '/Signup.' + extension;
