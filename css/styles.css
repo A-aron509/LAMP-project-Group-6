@@ -78,6 +78,11 @@ body
     background-color: #20B2AA;
 }
 
+#contactActions
+{
+    margin-top: 25px;
+}
+
 .buttons
 {
     font-size: 30px;
