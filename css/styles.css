@@ -74,7 +74,9 @@ body
     font-size: 30px;
     border-radius: 25px;
     width: 50%;
+	height: 55px;
     margin-left: 25%;
+	margin-bottom: 1%;
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -105,9 +107,13 @@ input[type="text"],input[type="password"]{
     border-radius: 25px;
     text-align: center;
     width: 80%;
+	height: 55px;
+	font-size: 22px;
+	padding: 0 15px;
     margin-left: 10%;
     margin-bottom: 2%;
     font-family: 'Ubuntu', sans-serif;
+	box-sizing: border-box;
 }
 
 #inner-title{
