@@ -31,15 +31,11 @@ body
     background-color:#20B2AA;
 }
 
-
-
-#signupButton {
+#signupButton 
+{
   width: 20%;
     margin-left: 40%;
-
 }
-
-
 
 #SignUp
 {
@@ -50,7 +46,6 @@ body
     margin: 0 0 2% 0;
 }
 
-
 #options
 {
     font-size: 30px;
@@ -59,7 +54,6 @@ body
     padding: 25px;
     background-color:#20B2AA;
 }
-
 
 #options h1
 {
@@ -140,20 +134,24 @@ body
 {
 	font-size: 30px;
 }
+
 #loginPassword
 {
 	font-size: 30px;
 }
+
 #searchText
 {
 	font-size: 30px;
 }
+
 #colorText
 {
 	font-size: 30px;
 }
 
-input[type="text"],input[type="password"]{
+input[type="text"],input[type="password"]
+{
     border-radius: 25px;
     text-align: center;
     width: 80%;
@@ -166,7 +164,8 @@ input[type="text"],input[type="password"]{
 	box-sizing: border-box;
 }
 
-#inner-title{
+#inner-title
+{
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
@@ -177,7 +176,8 @@ input[type="text"],input[type="password"]{
     color: #FFFAFA;
 }
 
-#loginResult{
+#loginResult
+{
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
@@ -188,19 +188,22 @@ input[type="text"],input[type="password"]{
     color: #95060a;
 }
 
-#userName{
+#userName
+{
     display: inline-block;
     width: 80%;
     margin-left: 10%;
     text-align: center;
 }
 
-#logoutButton{
+#logoutButton
+{
     width: 20%;
     margin-left: 40%;
 }
 
-select{
+select
+{
     width: 30%;
     margin-left: 35%;
     margin-top: 2%;
@@ -208,11 +211,13 @@ select{
     font-family: 'Ubuntu', sans-serif;
 }
 
-#colorSearchResult{
+#colorSearchResult
+{
     display: none;
 }
 
-#colorAddResult{
+#colorAddResult
+{
     display: inline-block;
     font-size: 0.8em;
     width: 90%;
