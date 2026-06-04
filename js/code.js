@@ -252,16 +252,16 @@ function searchContact() {
 						document.getElementById("contactActions").style.display = "none";
 						currentContact = null;
 					} else {
-						document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
+						//document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
     	      let jsonObject = JSON.parse( xhr.responseText );                                     
    	
 						for (let i = 0; i < jsonObject.results.length; i++) {
 							let contact = jsonObject.results[i];
-							contactList += "<strong>" + contact.FirstName + " " + contact.LastName + "</strong><br />";
-							contactList += "Phone: " + contact.Phone + "<br />";
-							contactList += "Email: " + contact.Email + "<br />";
+							contactList += "<h3>" + contact.FirstName + " " + contact.LastName + "</h3>";
+							contactList += "<p>Phone: " + contact.Phone + "</p>";
+							contactList += "<p>Email: " + contact.Email + "</p>";
 							if (i < jsonObject.results.length - 1) {
-								contactList += "<br />\r\n";
+								contactList += "<hr />";
 							}
 						}
 						document.getElementById("ContactList").innerHTML = contactList;
@@ -274,12 +274,12 @@ function searchContact() {
 							document.getElementById("contactAddPhone").value = currentContact.Phone;
 							document.getElementById("contactAddEmail").value = currentContact.Email;
 						}
-						document.getElementById("contactActions").style.display = "block";
+						document.getElementById("ContactBook").style.display = "block";
 						return true;
 					}
 				} else {
 					document.getElementById("contactSearchResult").innerHTML = "Server error: " + this.status;
-					//document.getElementById("contactActions").style.display = "none";
+					document.getElementById("contactActions").style.display = "none";
 					return false;
 				}
 			}
@@ -299,7 +299,7 @@ function deleteContact() { // ///contact to del in book
 	let first = currentContact ? currentContact.FirstName : document.getElementById("contactAddFirst").value;
 	let last = currentContact ? currentContact.LastName : document.getElementById("contactAddLast").value;
 	if (!first || !last) {
-		document.getElementById("contactDelResult").innerHTML = "No contact selected to delete.";
+		document.getElementById("contactDelResult").innerHTML = "Contact not found. Please search for a valid contact first or fill in the first and last name.";
 		return;
 	}
 
@@ -359,7 +359,7 @@ function editContact() {
 
 	let url = urlBase + '/contacts/EditContact.' + extension;
 
-	// Pass old name (from search result) and new name (from form)
+	
 	let tmp = {
 		oldFirstName: currentContact.FirstName,
 		oldLastName: currentContact.LastName,
@@ -412,7 +412,7 @@ function addContact() { ///contact to book
 
 
 if (FirstName == "" || LastName == "" || Phone == "") {
-		document.getElementById("contactAddResult").innerHTML = "Please fill in all fields.";
+		document.getElementById("contactAddResult").innerHTML = "Please fill in all required fields.";
 		return;
 	}
 
@@ -472,7 +472,7 @@ function addUser() { //puts user info into database, then takes user to login pa
 
 	//if fields are empty, then we show error message and do not add user to database
 	if (FirstName == "" || LastName == "" || User == "" || Password == "") {
-		document.getElementById("NewAccount").innerHTML = "Please fill in all fields.";
+		document.getElementById("NewAccount").innerHTML = "Please fill in all required fields.";
 		return;
 	}
 

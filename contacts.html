@@ -15,39 +15,41 @@
 	
 </head>
 
+
 <body>
 
 <h1 id="title">COP 4331 LAMP Stack Demo</h1>
 
-<div id="contactsDiv">
-
+<div id="ContactBook"> <br />
+ <h1>Search or delete contacts:</h1>
 <input type="text" id="ContactFirstSearch" placeholder="Search by First Name"/>
 <input type="text" id="ContactLastSearch" placeholder="Search by Last Name"/>
 	<button type="button" id="ContactSearchButton" class="buttons" onclick="searchContact();"> Search Contact </button><br />
 	<span id="contactSearchResult"></span>
+	<p id="ContactList"></p>
  <button type="button" id="contactDeleteButton" class="buttons" onclick="deleteContact();"> Delete Contact </button><br />
 	<span id="contactDelResult"></span>
-	
-<div id="contactActions">
-	
+
+
+
+    <h1>Add or edit contacts:</h1>
 	<input type="text" id="contactAddFirst" placeholder="Contact FirstName"/>
 	<input type="text" id="contactAddLast" placeholder="Contact LastName"/>
-	<input type="text" id="contactAddPhone" placeholder="Contact Phone "/>
-    <input type="text" id="contactAddEmail" placeholder="Contact Email(optional)"/>
+	<input type="text" id="contactAddPhone" placeholder="Contact Phone"/>
+    <input type="text" id="contactAddEmail" placeholder="Contact Email (optional)"/>
 	<button type="button" id="contactAddButton" class="buttons" onclick="addContact();"> Add Contact </button><br />
 	<span id="contactAddResult"></span>
 
+
 <button type="button" id="contactEditButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
 <span id="contactEditResult"></span>
-
-</div>
-
-</div>
 
 <div id="back">
 	<span id="backB"></span><br />
 	<button type="button" id="backbutton" class="buttons" onclick="goBack();"> Back </button>
 </div>
+
+
 
 </body>
 </html>
