@@ -84,6 +84,15 @@ body
     color: #FFFAFA;
 }
 
+.contactHeading
+{
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 22px;
+    color: #FFFAFA;
+    margin: 20px 0;
+}
+
 #searchContactDiv 
 {
     font-size: 30px;
