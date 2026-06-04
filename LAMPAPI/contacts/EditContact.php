@@ -1,48 +1,62 @@
 <?php
-require_once '../config/db.php';
-require_once '../config/helpers.php';
-
-setCORSHeaders();
-
-$userId = requireAuth();
-$db     = getDB();
-
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
-    respond(405, ['error' => 'Method not allowed']);
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
+	$inData = getRequestInfo();
+	
+	$oldFirstName = $inData["oldFirstName"];
+	$oldLastName = $inData["oldLastName"];
+	$newFirstName = $inData["FirstName"];
+	$newLastName = $inData["LastName"];
+	$Phone = isset($inData["Phone"]) ? $inData["Phone"] : "";
+	$Email = $inData["Email"]; 
+ 	$UserID = $inData["userId"];
 
-$contactId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-if (!$contactId) {
-    respond(400, ['error' => 'Contact ID required — use ?id=1']);
-}
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
+	if ($conn->connect_error) 
+	{
+		returnWithError( $conn->connect_error );
+	} 
+	else
+	{
+		// Update contact by matching oldFirstName and oldLastName
+		$stmt = $conn->prepare("UPDATE Contacts SET FirstName=?, LastName=?, Phone=?, Email=? WHERE FirstName=? AND LastName=? AND UserID=?");
+		if (!$stmt) {
+			returnWithError($conn->error);
+			exit();
+		}
+		$stmt->bind_param("ssssssi", $newFirstName, $newLastName, $Phone, $Email, $oldFirstName, $oldLastName, $UserID);
+		$stmt->execute();
+		
+		if ($stmt->affected_rows > 0) {
+			returnWithError(""); // Success
+		} else {
+			returnWithError("Contact not found or no changes made");
+		}
+		
+		$stmt->close();
+		$conn->close();
+	}
 
-$body      = getRequestBody();
-$firstName = clean($body['first_name'] ?? '');
-$lastName  = clean($body['last_name']  ?? '');
-$email     = clean($body['email']      ?? '');
-$phone     = clean($body['phone']      ?? '');
-$notes     = clean($body['notes']      ?? '');
+	function getRequestInfo()
+	{
+		return json_decode(file_get_contents('php://input'), true);
+	}
 
-if (!$firstName || !$lastName) {
-    respond(400, ['error' => 'first_name and last_name are required']);
-}
-
-$stmt = $db->prepare(
-    'UPDATE contacts SET first_name=:fn, last_name=:ln, email=:email, phone=:phone, notes=:notes
-     WHERE contact_id=:cid AND user_id=:uid'
-);
-$stmt->execute([
-    ':fn'    => $firstName,
-    ':ln'    => $lastName,
-    ':email' => $email ?: null,
-    ':phone' => $phone ?: null,
-    ':notes' => $notes ?: null,
-    ':cid'   => $contactId,
-    ':uid'   => $userId,
-]);
-
-if ($stmt->rowCount() === 0) {
-    respond(404, ['error' => 'Contact not found or not yours']);
-}
-
-respond(200, ['message' => 'Contact updated successfully']);
+	function sendResultInfoAsJson( $obj )
+	{
+		header('Content-type: application/json');
+		echo $obj;
+	}
+	
+	function returnWithError( $err )
+	{
+		$retValue = '{"error":"' . $err . '"}';
+		sendResultInfoAsJson( $retValue );
+	}
+	
+?>

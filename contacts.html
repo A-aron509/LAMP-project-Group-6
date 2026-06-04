@@ -22,18 +22,18 @@
 
 <div id="ContactBook"> <br />
 
-<input type="text" id="ContactSearch" placeholder="Search for Contact"/>
+<input type="text" id="ContactFirstSearch" placeholder="Search by First Name"/>
+<input type="text" id="ContactLastSearch" placeholder="Search by Last Name"/>
 	<button type="button" id="ContactSearchButton" class="buttons" onclick="searchContact();"> Search Contact </button><br />
 	<span id="contactSearchResult"></span>
  
-	<p id="ContactList"></p><br /><br />
-<div id="contactActions" style="display:none; margin-top: 15px;">
+	<p id="ContactList"></p>
+<div id="contactActions"> <br />
 	<button type="button" id="contactDeleteButton" class="buttons" onclick="deleteContact();"> Delete Contact </button><br />
-	<span id="contactDelResult"></span><br /><br />
+	<span id="contactDelResult"></span>
 </div>
 
-<button type="button" id="contactEditButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
-<span id="contactEditResult"></span>
+
 
 </div>
 
@@ -47,10 +47,14 @@
 	<span id="contactAddResult"></span>
 
 
+<button type="button" id="contactEditButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+<span id="contactEditResult"></span>
+
 <div id="back">
 	<span id="backB"></span><br />
 	<button type="button" id="backbutton" class="buttons" onclick="goBack();"> Back </button>
 </div>
+
 
 
 </body>

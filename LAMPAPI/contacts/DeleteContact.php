@@ -1,28 +1,61 @@
 <?php
-require_once '../config/db.php';
-require_once '../config/helpers.php';
-
-setCORSHeaders();
-
-$userId = requireAuth();
-$db     = getDB();
-
-if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
-    respond(405, ['error' => 'Method not allowed']);
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Content-Type");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
+	$inData = getRequestInfo();
+	
+	
+	$FirstName = $inData["FirstName"];
+	$LastName = $inData["LastName"];
+	$Phone = isset($inData["Phone"]) ? $inData["Phone"] : "";
+	$Email = $inData["Email"]; 
+ 	$UserID = $inData["userId"];
 
-$contactId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-if (!$contactId) {
-    respond(400, ['error' => 'Contact ID required — use ?id=1']);
-}
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
+	if ($conn->connect_error) 
+	{
+		returnWithError( $conn->connect_error );
+	} 
+	else
+	{
+		// Update contact by matching oldFirstName and oldLastName
+		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName=? AND LastName=? AND UserID=?");
+		if (!$stmt) {
+			returnWithError($conn->error);
+			exit();
+		}
+		$stmt->bind_param("sss", $FirstName, $LastName, $UserID);
+		$stmt->execute();
+		
+		if ($stmt->affected_rows > 0) {
+			returnWithError(""); // Success
+		} else {
+			returnWithError("Contact not found or no changes made");
+		}
+		
+		$stmt->close();
+		$conn->close();
+	}
 
-$stmt = $db->prepare(
-    'DELETE FROM contacts WHERE contact_id = :cid AND user_id = :uid'
-);
-$stmt->execute([':cid' => $contactId, ':uid' => $userId]);
+	function getRequestInfo()
+	{
+		return json_decode(file_get_contents('php://input'), true);
+	}
 
-if ($stmt->rowCount() === 0) {
-    respond(404, ['error' => 'Contact not found or not yours']);
-}
-
-respond(200, ['message' => 'Contact deleted successfully']);
+	function sendResultInfoAsJson( $obj )
+	{
+		header('Content-type: application/json');
+		echo $obj;
+	}
+	
+	function returnWithError( $err )
+	{
+		$retValue = '{"error":"' . $err . '"}';
+		sendResultInfoAsJson( $retValue );
+	}
+	
+?>

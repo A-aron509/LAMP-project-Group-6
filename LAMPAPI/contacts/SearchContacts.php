@@ -11,13 +11,15 @@
 		returnWithError( $conn->connect_error );
 	} 
 	else
-	{		$search = "%" . $inData["search"] . "%";
-		$stmt = $conn->prepare("SELECT FirstName, LastName,  Phone, Email FROM Contacts WHERE (FirstName LIKE ? OR LastName LIKE ? OR Email LIKE ?) AND UserID = ?");
+	{
+		$searchFirst = "%" . strtolower(trim($inData["SearchF"])) . "%";
+		$searchLast = "%" . strtolower(trim($inData["SearchL"])) . "%";
+		$stmt = $conn->prepare("SELECT FirstName, LastName, Phone, Email FROM Contacts WHERE (LOWER(FirstName) LIKE ? AND LOWER(LastName) LIKE ?) AND UserID = ?");
 		if (!$stmt) {
 			returnWithError($conn->error);
 			exit();
 		}
-		$stmt->bind_param("sssi", $search, $search, $search, $inData["userId"]);
+		$stmt->bind_param("ssi", $searchFirst, $searchLast, $inData["userId"]);
 		$stmt->execute();
 		$result = $stmt->get_result();
 		
@@ -28,8 +30,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			   $searchResults .= '"' . $row["Name"] . '"';
-			  
+			$searchResults .= '{"FirstName":"' . $row["FirstName"] . '","LastName":"' . $row["LastName"] . '","Phone":"' . $row["Phone"] . '","Email":"' . $row["Email"] . '"}';
 		}
 		
 		if( $searchCount == 0 )

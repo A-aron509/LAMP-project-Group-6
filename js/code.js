@@ -5,6 +5,7 @@ let xhr = new XMLHttpRequest();
 let userId = 0;
 let FirstName = "";
 let LastName = "";
+let currentContact = null; // Store the currently selected contact for editing
 //--------------------------------------------------------------------
 function colorsMenu(){
 	window.location.href = "color.html";
@@ -221,13 +222,14 @@ function searchColor() {
 } 
 //--------------------------------------------------------------------
 function searchContact() { 
-	let srch = document.getElementById("ContactSearch").value;
+	let srchFirst = document.getElementById("ContactFirstSearch").value;
+ 	let srchLast = document.getElementById("ContactLastSearch").value;
 	document.getElementById("contactSearchResult").innerHTML = "";
 	document.getElementById("contactActions").style.display = "none";
 	
 	let contactList = "";
 
-	let tmp = {search:srch,userId:userId};
+	let tmp = {SearchF:srchFirst,SearchL:srchLast,userId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
 	let url = urlBase + '/contacts/SearchContacts.' + extension;
@@ -242,24 +244,43 @@ function searchContact() {
 			if (this.readyState == 4) {
 				if (this.status == 200) {
 					let jsonObject = JSON.parse(xhr.responseText);
+					
 					if (jsonObject.error && jsonObject.error !== "") {
 						document.getElementById("contactSearchResult").innerHTML = jsonObject.error;
+    	    
 						document.getElementById("ContactList").innerHTML = "";
 						document.getElementById("contactActions").style.display = "none";
+						currentContact = null;
 					} else {
-						document.getElementById("contactSearchResult").innerHTML = "Contact(s) has been retrieved";
+						document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
+    	      let jsonObject = JSON.parse( xhr.responseText );                                     
+   	
 						for (let i = 0; i < jsonObject.results.length; i++) {
-							contactList += jsonObject.results[i];
+							let contact = jsonObject.results[i];
+							contactList += "<strong>" + contact.FirstName + " " + contact.LastName + "</strong><br />";
+							contactList += "Phone: " + contact.Phone + "<br />";
+							contactList += "Email: " + contact.Email + "<br />";
 							if (i < jsonObject.results.length - 1) {
 								contactList += "<br />\r\n";
 							}
 						}
 						document.getElementById("ContactList").innerHTML = contactList;
+						// Store the first contact for editing
+						if (jsonObject.results.length >= 1) {
+							currentContact = jsonObject.results[0];
+							// Pre-populate edit form with current contact info
+							document.getElementById("contactAddFirst").value = currentContact.FirstName;
+							document.getElementById("contactAddLast").value = currentContact.LastName;
+							document.getElementById("contactAddPhone").value = currentContact.Phone;
+							document.getElementById("contactAddEmail").value = currentContact.Email;
+						}
 						document.getElementById("contactActions").style.display = "block";
+						return true;
 					}
 				} else {
 					document.getElementById("contactSearchResult").innerHTML = "Server error: " + this.status;
-					document.getElementById("contactActions").style.display = "none";
+					//document.getElementById("contactActions").style.display = "none";
+					return false;
 				}
 			}
 		};
@@ -285,17 +306,64 @@ let del = document.getElementById("ContactSearch").value;
 
 }
 
-function editContact() {  ///contact to edit in book //maybe show contact ID number and then edit??
-let del = document.getElementById("ContactSearch").value;
-	document.getElementById("contactSearchResult").innerHTML = "";
-	document.getElementById("contactActions").style.display = "none";
+function editContact() {
+	if (!currentContact) {
+		document.getElementById("contactAddResult").innerHTML = "Please search for a contact first.";
+		return;
+	}
 
-	let jsonPayload = JSON.stringify( tmp );
+	let newFirstName = document.getElementById("contactAddFirst").value;
+	let newLastName = document.getElementById("contactAddLast").value;
+	let Phone = document.getElementById("contactAddPhone").value;
+	let Email = document.getElementById("contactAddEmail").value;
+	document.getElementById("contactAddResult").innerHTML = "";
+
+	if (newFirstName == "" || newLastName == "" || Email == "") {
+		document.getElementById("contactAddResult").innerHTML = "Please fill in all fields.";
+		return;
+	}
 
 	let url = urlBase + '/contacts/EditContact.' + extension;
 
+	// Pass old name (from search result) and new name (from form)
+	let tmp = {
+		oldFirstName: currentContact.FirstName,
+		oldLastName: currentContact.LastName,
+		FirstName: newFirstName,
+		LastName: newLastName,
+		Phone: Phone,
+		Email: Email,
+		userId: userId
+	};
+	let jsonPayload = JSON.stringify(tmp);
 
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 
+	try {
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let jsonObject = JSON.parse(xhr.responseText);
+				
+				if (jsonObject.error && jsonObject.error !== "") {
+					document.getElementById("contactAddResult").innerHTML = "Error: " + jsonObject.error;
+				} else {
+					document.getElementById("contactAddResult").innerHTML = "Contact updated successfully";
+					// Clear the current contact and form
+					currentContact = null;
+					document.getElementById("contactAddFirst").value = "";
+					document.getElementById("contactAddLast").value = "";
+					document.getElementById("contactAddPhone").value = "";
+					document.getElementById("contactAddEmail").value = "";
+					document.getElementById("ContactList").innerHTML = "";
+				}
+			}
+		};
+		xhr.send(jsonPayload);
+	} catch(err) {
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
 }
 
 
