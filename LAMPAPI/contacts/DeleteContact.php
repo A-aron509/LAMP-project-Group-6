@@ -7,13 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 	$inData = getRequestInfo();
-	
-	
-	$FirstName = $inData["FirstName"];
-	$LastName = $inData["LastName"];
+
+	// Use trimmed, lowercased inputs for case-insensitive matching
+	$FirstName = strtolower(trim($inData["FirstName"]));
+	$LastName = strtolower(trim($inData["LastName"]));
 	$Phone = isset($inData["Phone"]) ? $inData["Phone"] : "";
-	$Email = $inData["Email"]; 
- 	$UserID = $inData["userId"];
+	$Email = isset($inData["Email"]) ? $inData["Email"] : ""; 
+	$UserID = $inData["userId"];
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
@@ -22,13 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 	} 
 	else
 	{
-		// Update contact by matching oldFirstName and oldLastName
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE FirstName=? AND LastName=? AND UserID=?");
+		// Case-insensitive delete using LOWER(...) on DB columns
+		$stmt = $conn->prepare("DELETE FROM Contacts WHERE LOWER(FirstName)=? AND LOWER(LastName)=? AND UserID=?");
 		if (!$stmt) {
 			returnWithError($conn->error);
 			exit();
 		}
-		$stmt->bind_param("sss", $FirstName, $LastName, $UserID);
+		$stmt->bind_param("ssi", $FirstName, $LastName, $UserID);
 		$stmt->execute();
 		
 		if ($stmt->affected_rows > 0) {

@@ -295,20 +295,54 @@ function searchContact() {
 
 
 function deleteContact() { // ///contact to del in book
-let del = document.getElementById("ContactSearch").value;
-	document.getElementById("contactSearchResult").innerHTML = "";
-	document.getElementById("contactActions").style.display = "none";
+	// Determine which contact to delete: prefer the selected contact, otherwise use form inputs
+	let first = currentContact ? currentContact.FirstName : document.getElementById("contactAddFirst").value;
+	let last = currentContact ? currentContact.LastName : document.getElementById("contactAddLast").value;
+	if (!first || !last) {
+		document.getElementById("contactDelResult").innerHTML = "No contact selected to delete.";
+		return;
+	}
 
-	let jsonPayload = JSON.stringify( tmp );
+	document.getElementById("contactDelResult").innerHTML = "";
+
+	let tmp = {FirstName: first, LastName: last, userId: userId};
+	let jsonPayload = JSON.stringify(tmp);
 
 	let url = urlBase + '/contacts/DeleteContact.' + extension;
 
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				let jsonObject = JSON.parse(xhr.responseText);
+				if (jsonObject.error && jsonObject.error !== "") {
+					document.getElementById("contactDelResult").innerHTML = jsonObject.error;
+				} else {
+					document.getElementById("contactDelResult").innerHTML = "Contact deleted";
+					// clear UI
+					currentContact = null;
+					document.getElementById("contactAddFirst").value = "";
+					document.getElementById("contactAddLast").value = "";
+					document.getElementById("contactAddPhone").value = "";
+					document.getElementById("contactAddEmail").value = "";
+					document.getElementById("ContactList").innerHTML = "";
+					document.getElementById("contactActions").style.display = "none";
+				}
+			}
+		};
+		xhr.send(jsonPayload);
+	} catch(err) {
+		document.getElementById("contactDelResult").innerHTML = err.message;
+	}
 
 }
 
+
 function editContact() {
 	if (!currentContact) {
-		document.getElementById("contactAddResult").innerHTML = "Please search for a contact first.";
+		document.getElementById("contactAddResult").innerHTML = "Please search for a valid contact first.";
 		return;
 	}
 
@@ -318,8 +352,8 @@ function editContact() {
 	let Email = document.getElementById("contactAddEmail").value;
 	document.getElementById("contactAddResult").innerHTML = "";
 
-	if (newFirstName == "" || newLastName == "" || Email == "") {
-		document.getElementById("contactAddResult").innerHTML = "Please fill in all fields.";
+	if (newFirstName == "" || newLastName == "" || Phone == "") {
+		document.getElementById("contactAddResult").innerHTML = "Please fill in all required fields.";
 		return;
 	}
 
@@ -377,7 +411,7 @@ function addContact() { ///contact to book
 	document.getElementById("contactAddResult").innerHTML = "";
 
 
-if (FirstName == "" || LastName == "" || Email == "") {
+if (FirstName == "" || LastName == "" || Phone == "") {
 		document.getElementById("contactAddResult").innerHTML = "Please fill in all fields.";
 		return;
 	}
@@ -401,7 +435,7 @@ if (FirstName == "" || LastName == "" || Email == "") {
 			if (this.readyState == 4 && this.status == 200) 
 			{
 				document.getElementById("contactAddResult").innerHTML = "Contact has been added";
-        window.location.href="menu.html"; //takes user to login page after successful sign up
+        //window.location.href="menu.html"; //takes user to login page after successful sign up
 			}
 		};
 		xhr.send(jsonPayload);
