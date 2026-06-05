@@ -247,10 +247,10 @@ function searchContact() {
 						document.getElementById("contactSearchResult").innerHTML = jsonObject.error;
     	    
 						document.getElementById("ContactList").innerHTML = "";
-						document.getElementById("contactActions").style.display = "none";
+						document.getElementById("ContactList").style.display = "none";
 						currentContact = null;
 					} else {
-						//document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
+						document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
     	      let jsonObject = JSON.parse( xhr.responseText );                                     
    	
 						for (let i = 0; i < jsonObject.results.length; i++) {
@@ -277,7 +277,7 @@ function searchContact() {
 					}
 				} else {
 					document.getElementById("contactSearchResult").innerHTML = "Server error: " + this.status;
-					document.getElementById("contactActions").style.display = "none";
+					document.getElementById("contactSearchResult").style.display = "none";
 					return false;
 				}
 			}
@@ -287,7 +287,7 @@ function searchContact() {
 	}
 	catch(err) {
 		document.getElementById("contactSearchResult").innerHTML = err.message;
-		document.getElementById("contactActions").style.display = "none";
+		document.getElementById("contactSearchResult").style.display = "none";
 	}
 }
 
@@ -326,7 +326,7 @@ function deleteContact() { // ///contact to del in book
 					document.getElementById("contactAddPhone").value = "";
 					document.getElementById("contactAddEmail").value = "";
 					document.getElementById("ContactList").innerHTML = "";
-					document.getElementById("contactActions").style.display = "none";
+					//document.getElementById("contactSearchResult").style.display = "none";
 				}
 			}
 		};
