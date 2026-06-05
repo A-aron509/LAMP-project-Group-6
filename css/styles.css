@@ -77,6 +77,20 @@ body
     background-color:#f95959;
 }
 
+.section-divider {
+    width: 80%;
+    margin: 25px auto;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#ContactBook h1
+{
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
 #searchContactDiv h1
 {
     text-align: center;

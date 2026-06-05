@@ -36,7 +36,7 @@ function doLogin()
 
 	let jsonPayload = JSON.stringify(tmp);
  
-	let url = urlBase + '/Login.' + extension;
+	let url = urlBase + '/auth/Login.' + extension;
 
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -143,7 +143,7 @@ function addColor() {
 	let tmp = {Color:newColor,UserId:userId};
 	let jsonPayload = JSON.stringify( tmp );
 
-	let url = urlBase + '/AddColor.' + extension;
+	let url = urlBase + '/colors/AddColor.' + extension;
 	
 	let xhr = new XMLHttpRequest();
 	xhr.open("POST", url, true);
@@ -223,7 +223,7 @@ function searchContact() {
 	let srchFirst = document.getElementById("ContactFirstSearch").value;
  	let srchLast = document.getElementById("ContactLastSearch").value;
 	document.getElementById("contactSearchResult").innerHTML = "";
-	document.getElementById("contactActions").style.display = "none";
+	document.getElementById("contactSearchResult").style.display = "none";
 	
 	let contactList = "";
 
