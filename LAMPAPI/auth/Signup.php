@@ -16,12 +16,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
 	{
-		returnWithError( $conn->connect_error );
+		returnWithError($conn->connect_error);
 	} else
 	{
+		// Check for an existing user with the same login
+		$checkStmt = $conn->prepare("SELECT COUNT(*) FROM Users WHERE Login = ?");
+		if (!$checkStmt) {
+			$conn->close();
+			returnWithError($conn->error);
+		}
+		$checkStmt->bind_param("s", $Login);
+		$checkStmt->execute();
+		$checkStmt->bind_result($count);
+		$checkStmt->fetch();
+		$checkStmt->close();
+
+		if ($count > 0) {
+			$conn->close();
+			returnWithError("Username already exists.");
+		}
+
 		$stmt = $conn->prepare("INSERT into Users (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
+		if (!$stmt) {
+			$conn->close();
+			returnWithError($conn->error);
+		}
 		$stmt->bind_param("ssss", $FirstName, $LastName, $Login, $Password);
-		$stmt->execute();
+		if (!$stmt->execute()) {
+			$returnError = $stmt->error;
+			$stmt->close();
+			$conn->close();
+			returnWithError($returnError);
+		}
 		$stmt->close();
 		$conn->close();
 		returnWithError("");
@@ -42,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 	{
 		$retValue = '{"error":"' . $err . '"}';
 		sendResultInfoAsJson( $retValue );
+		exit();
 	}
 	
 ?>

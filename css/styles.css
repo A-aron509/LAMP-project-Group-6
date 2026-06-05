@@ -138,7 +138,14 @@ body
   gap: 10px;           /* Puts a 10px space between the buttons */
 }
 
+#signup{
+font-size: 30px;
+    width: 70%;
+    margin-left: 15%;
+    padding: 25px;
+    background-color:#f95959;
 
+}
 
 
 #loginPassword

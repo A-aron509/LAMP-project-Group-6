@@ -1,4 +1,4 @@
- <?php
+<?php
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -8,19 +8,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 	$inData = getRequestInfo();
 	
-	$FirstName = $inData["FirstName"]; //Represents the color name that the user wants to add
-	$LastName = $inData["LastName"]; //Represents the user that is adding the color, this is used to make sure the color is added to the correct user
-    $Login = $inData["Login"]; //Represents the user that is adding the color, this is used to make sure the color is added to the correct user
-    $Password = $inData["Password"];
+	$Color = $inData["Color"]; //Represents the color name that the user wants to add
+	$UserID = $inData["UserId"]; //Represents the user that is adding the color, this is used to make sure the color is added to the correct user
 
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
-	} else
+	} 
+	else
 	{
-		$stmt = $conn->prepare("INSERT into Users (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
-		$stmt->bind_param("ssss", $FirstName, $LastName, $Login, $Password);
+		$stmt = $conn->prepare("INSERT into Colors (UserID,Name) VALUES(?,?)");
+		$stmt->bind_param("ss", $UserID, $Color);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();
