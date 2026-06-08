@@ -102,20 +102,19 @@ function readCookie()
         }
         else if (tokens[0] == "userId")
         {
-            userId = parseInt(tokens[1].trim());
+            userId = parseInt(tokens[1].trim(), 10);
         }
     }
-    if (userId < 0)
+    if (!Number.isInteger(userId) || userId < 1)
     {
         window.location.href = "index.html";
     }
     else
     {
-                   let userNameElem = document.getElementById("userName");
-           if (userNameElem) {
-               userNameElem.innerHTML = "Welcome " + FirstName + " " + LastName;
-           }
-        
+        let userNameElem = document.getElementById("userName");
+        if (userNameElem) {
+            userNameElem.innerHTML = "Welcome " + FirstName + " " + LastName;
+        }
     }
 }
 
@@ -220,6 +219,12 @@ function searchContact() {
     
     let contactList = "";
 
+    if (!Number.isInteger(userId) || userId < 1) {
+        document.getElementById("contactSearchResult").innerHTML = "You must be logged in to search contacts.";
+        document.getElementById("contactSearchResult").style.display = "block";
+        return;
+    }
+
     let tmp = {SearchF:srchFirst,SearchL:srchLast,userId:userId};
     let jsonPayload = JSON.stringify(tmp);
 
@@ -228,6 +233,14 @@ function searchContact() {
     let xhr = new XMLHttpRequest();
     xhr.open("POST", url, true);
     xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+    xhr.onerror = function() {
+        document.getElementById("contactSearchResult").innerHTML = "Network error while searching contacts.";
+        document.getElementById("contactSearchResult").style.display = "block";
+    };
+    xhr.ontimeout = function() {
+        document.getElementById("contactSearchResult").innerHTML = "Request timed out while searching contacts.";
+        document.getElementById("contactSearchResult").style.display = "block";
+    };
     try {
         xhr.onreadystatechange = function() {
             if (this.readyState == 4) {
@@ -244,7 +257,7 @@ function searchContact() {
                         document.getElementById("ContactList").innerHTML = "";
                         currentContact = null;
                     } else {
-                        document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
+                       // document.getElementById("contactSearchResult").innerHTML = "Contact has been retrieved";
                         for (let i = 0; i < jsonObject.results.length; i++) {
                             let contact = jsonObject.results[i];
                             contactList += "<h3>" + contact.FirstName + " " + contact.LastName + "</h3>";

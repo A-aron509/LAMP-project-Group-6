@@ -5,9 +5,10 @@ body
 
 #title 
 {
+    display: block;
     font-size: 40px;
     width: 100%;
-    margin: 2% 5%;
+    margin: 2% auto;
     text-align: center;
     font-family: 'Ubuntu', sans-serif;
     color: #FFFAFA;
@@ -21,6 +22,7 @@ body
     padding: 25px;
     background-color:#f95959;
 }
+
 
 #SignupDiv
 {
@@ -39,7 +41,16 @@ body
 
 }
 
-
+#UserParadise
+{
+    font-size: 40px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+    /*margin: 0 0 2% 0;*/
+     margin-left: 3.5%;
+    margin-bottom: 2%;
+}
 
 #SignUp
 {
@@ -86,7 +97,11 @@ body
 
 #ContactBook h1
 {
-    text-align: center;
+    font-size: 40px;
+    width: 70%;
+    margin-right: 15%;
+    padding: 25px;
+    text-align: left;
     font-family: 'Ubuntu', sans-serif;
     color: #FFFAFA;
 }
@@ -211,11 +226,62 @@ input[type="text"],input[type="password"]{
 }
 
 #userName{
+    /*display: inline-block;*/
+    width: 80%;
+    /*margin-left: 10%;*/
+    text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
+#contactAddResult{
     display: inline-block;
     width: 80%;
     margin-left: 10%;
     text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
 }
+
+#contactEditResult{
+    display: inline-block;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
+#contactSearchResult{
+    display: inline-block;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
+#ContactList,
+#ContactList h3,
+#ContactList p {
+    display: block;
+    font-size: 30px;
+    width: 100%;
+    margin: 2% auto 0 auto;
+    text-align: left;
+    font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
+#contactBook{
+    display: inline-block;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center;
+        font-family: 'Ubuntu', sans-serif;
+    color: #FFFAFA;
+}
+
 
 #logoutButton{
     width: 20%;

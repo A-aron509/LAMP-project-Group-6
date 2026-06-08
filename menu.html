@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="js/code.js"></script>
     <link href="css/styles.css" rel="stylesheet">	
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-	
+
 	<script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() //the goal for search user is for it to be accessable to only those logged in. (like search color)
 	{
@@ -20,19 +20,20 @@
 
 <body>
 
-<h1 id="title">User Paradise</h1>
+<h1 id="UserParadise">User Paradise</h1>
+
+<div id="loggedInDiv">
+    <span id="userName"></span><br /> <!-- This is where the username will be displayed when logged in. --> 
+    
+</div>
 
 
 <div id="options">
     	<button type="button" id="coloropt" class="buttons" onclick="colorsMenu();"> Colors </button><br />
      	<button type="button" id="contactopt" class="buttons" onclick="contactsMenu();"> Contacts </button><br />
-	<span id="NewAccount"></span>
-
-</div>
-
-<div id="loggedInDiv">
-	<span id="userName"></span><br />
 	<button type="button" id="logoutButton" class="buttons" onclick="doLogout();"> Log Out </button>
+		<span id="NewAccount"></span>
+
 </div>
 
 

@@ -2,29 +2,30 @@
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>User Paradise</title>
+<meta name="description" content="This page is the menu for the user to select contacts.">
+<title>User Paradise</title>
 	<script type="text/javascript" src="js/code.js"></script>
-    <link href="css/styles.css" rel="stylesheet">	
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        readCookie();
+    }, false);
+    </script>
+    <link href="css/styles.css" rel="stylesheet"> 	
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-	
-	<script type="text/javascript">
-	document.addEventListener('DOMContentLoaded', function() //the goal for search user is for it to be accessable to only those logged in. (like search color)
-	{
-		readCookie();
-	}, false);
-	</script>
-	
 </head>
-
 
 <body>
 
-<h1 id="title">User Paradise</h1>
+<h1 id="UserParadise">User Paradise</h1>
+<div id="loggedInDiv">
+	<span id="userName"></span>
+</div>
 
 <div id="ContactBook"> <br />
  <h1>Search or delete contacts:</h1>
-<input type="text" id="ContactFirstSearch" placeholder="Search by First Name"/>
-<input type="text" id="ContactLastSearch" placeholder="Search by Last Name"/>
+ 
+	<input type="text" id="ContactFirstSearch" placeholder="Search by First Name"/>
+	<input type="text" id="ContactLastSearch" placeholder="Search by Last Name"/>
 	<button type="button" id="ContactSearchButton" class="buttons" onclick="searchContact();"> Search Contact </button><br />
 	<span id="contactSearchResult"></span>
  
@@ -44,14 +45,14 @@
 	<span id="contactAddResult"></span>
 
 
-<button type="button" id="contactEditButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
-<span id="contactEditResult"></span>
+	<button type="button" id="contactEditButton" class="buttons" onclick="editContact();"> Edit Contact </button><br />
+	<span id="contactEditResult"></span>
+</div>
 
 <div id="back">
 	<span id="backB"></span><br />
 	<button type="button" id="backbutton" class="buttons" onclick="goBack();"> Back </button>
 </div>
-
 
 
 </body>
